@@ -1,0 +1,30 @@
+.movies-root {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.movie-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.movie {
+    padding: 5px;
+    background-color: #333;
+    margin: 2px;
+    flex: 1;
+    cursor: pointer;
+    color: #fff;
+}
+
+.movie_image {
+    height: 300px;
+    width: 300px;
+}
+
+.movieDetails {
+    position: absolute;
+}

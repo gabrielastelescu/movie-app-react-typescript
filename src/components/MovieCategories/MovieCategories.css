@@ -1,0 +1,28 @@
+.root {
+    height: 100%;
+}
+
+.movie-category {
+    margin-bottom: 2px;
+    background-color: #444;
+    color: #fff;
+    cursor: pointer;
+    flex: 1;
+    display: flex;
+    width: 100%;
+    padding: 0px 15px;
+    box-sizing: border-box;
+}
+
+.movie-category:hover {
+    background-color: #333;
+}
+
+.selected {
+    background-color: #333;;
+}
+
+.movie-category a {
+    text-decoration: none;
+    color: #fff;
+}
