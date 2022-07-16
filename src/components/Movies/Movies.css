@@ -4,6 +4,15 @@
     overflow: auto;
 }
 
+.movies-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40%;
+    font-size: 30px;
+    color: yellow;
+}
+
 .movie-row {
     display: flex;
     flex-direction: row;

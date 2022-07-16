@@ -1,42 +1,24 @@
 import { MovieModel, MovieCategory, MoviesModel } from "../models/reduxModel";
-
-const BASE_URL = process.env.REACT_APP_PUBLIC_BASE_URL;
-const POSTER_BASE_URL = process.env.REACT_APP_PUBLIC_POSTER_URL;
-const API_KEY = process.env.REACT_APP_PRIVATE_API_KEY;
-const DEFAULT_LANGUAGE = 'en-US';
-const CHUNK_SIZE = 4;
+import { BASE_URL, POSTER_BASE_URL, API_KEY, DEFAULT_LANGUAGE, MOVIE_COUNT_PER_ROW, MOVIE_CATEGORY_TRENDING, URL_TRENDING_MOVIES } from "../constants";
+import { chunk } from "../utils";
 
 const getMovieCategories = async (): Promise<MovieCategory[]> => {
-
     const response = await fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=${DEFAULT_LANGUAGE}`);
     const data = await response.json();
     const categories: MovieCategory[] = data?.genres?.map((genre: any) => { return { id: genre.id, title: genre.name } });
     return categories || [];
 }
 
-const chunk = (arr: MovieModel[], chunkSize: number) => {
-    if (chunkSize <= 0) throw new Error("Invalid chunk size");
-    var rows = [];
-    for (let i = 0, len = arr.length; i < len; i += chunkSize)
-        rows.push(arr.slice(i, i + chunkSize));
-    return rows;
-}
-
 let previousCategory = '';
 const getMovies = async (category: string | number, prevPage: number): Promise<MoviesModel> => {
-    const isCategoryChanged = previousCategory != category;
-    let page = prevPage;
-
-    if (isCategoryChanged) {
-        page = 1;
-    } else {
-        page++;
-    }
-
+    const hasCategoryChanged = previousCategory != category;
+    // If movie category has changed, start from page one
+    const pageNumber = previousCategory != category ? 1 : ++prevPage;
+    // Previous category will now be current category
     previousCategory = category.toString();
 
-    const url = `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=${DEFAULT_LANGUAGE}`
-        + `&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}`
+    const url = category === MOVIE_CATEGORY_TRENDING ? URL_TRENDING_MOVIES : `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=${DEFAULT_LANGUAGE}`
+        + `&sort_by=popularity.desc&include_adult=false&include_video=false&page=${pageNumber}`
         + `&with_genres=${category}&with_watch_monetization_types=flatrate`
 
     const response = await fetch(url);
@@ -52,10 +34,10 @@ const getMovies = async (category: string | number, prevPage: number): Promise<M
         }
     });
 
-    const chunkedMovies = chunk(movies, CHUNK_SIZE);
+    const chunkedMovies = chunk(movies, MOVIE_COUNT_PER_ROW);
 
     const moviesByCategory: MoviesModel = {
-        categoryChanged: isCategoryChanged,
+        categoryChanged: hasCategoryChanged,
         currentPage: data?.page,
         totalNrOfPages: data?.total_pages,
         movies: chunkedMovies

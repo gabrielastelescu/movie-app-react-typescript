@@ -26,7 +26,7 @@ function MovieCategories() {
         <div className='root'>
             {categories.map(category => {
                 return (
-                    <div onClick={(event) => onCategoryChangeHandler(category)} className={`movie-category ${selectedCategory === category.id ? "selected" : ''}`} key={category.id}>
+                    <div onClick={() => onCategoryChangeHandler(category)} className={`movie-category ${selectedCategory === category.id ? "selected" : ''}`} key={category.id}>
                         <h4>
                             <Link to={`categories/${category.id}`} replace={true} key={category.id}>{category.title}
                             </Link>
