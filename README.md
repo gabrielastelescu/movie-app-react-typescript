@@ -6,6 +6,8 @@ REACT_APP_PUBLIC_BASE_URL=https://api.themoviedb.org/3
 POSTER_BASE_URL=https://image.tmdb.org/t/p/w500
 API_KEY=YOUR_API_KEY_FROM_MOVIE_DB_ORG
 
+
+
 3. # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TS template.
